@@ -1,24 +1,47 @@
 import React from "react";
-import { Text, View, Button, Image } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+  ShadowPropTypesIOS
+} from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 
 const GREEN = "rgb(185,232,223)";
 
-const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+// TODO react-native doesn't support svgs
+const HamburgerButton = () => (
+  <svg viewBox="0 0 100 80" width="40" height="40">
+    <rect width="100" height="20"></rect>
+    <rect y="30" width="100" height="20"></rect>
+    <rect y="60" width="100" height="20"></rect>
+  </svg>
+);
+
+const NavigationDrawerStructure = ({ navigation }) => {
+  return (
+    <View style={{ flexDirection: "row" }}>
+      <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+        <Image
+          source={require("./assets/drawer.png")}
+          style={{ width: 25, height: 25, marginLeft: 5 }}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ flex: 2 }}>
-        <Button
-          onPress={() => navigation.push("Register missing Products")}
-          title="Register missing products"
-        />
-        <Button
-          onPress={() => navigation.push("Check for available Products")}
-          title="Check for available products"
-        />
+      <Header navigation={navigation} />
+      <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
+        <Text>Feed coming soon</Text>
       </View>
     </View>
   );
@@ -27,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
 const MissingProducts = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
+      <Text>Register missing product</Text>
     </View>
   );
 };
@@ -35,12 +58,12 @@ const MissingProducts = () => {
 const AvailableProducts = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
+      <Text>Register available product</Text>
     </View>
   );
 };
 
-const LogoTitle = () => {
+const Header = ({ navigation }) => {
   return (
     <View
       style={{
@@ -48,9 +71,13 @@ const LogoTitle = () => {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        alignContent: "center"
+        alignContent: "center",
+        backgroundColor: "#fff",
+        paddingTop: 10,
+        paddingBottom: 10
       }}
     >
+      <NavigationDrawerStructure navigation={navigation} />
       <Image
         style={{ width: 40, height: 40, marginRight: 10 }}
         source={require("./assets/logo.jpg")}
@@ -63,36 +90,44 @@ const LogoTitle = () => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Drawer.Navigator
+        initialRouteName="Home"
         screenOptions={{
-          headerTitleStyle: {
-            fontWeight: "bold"
-          }
+          drawerIcon: () => (
+            <Image
+              source={require("./assets/drawer.png")}
+              style={{ width: 25, height: 25, marginLeft: 5 }}
+            />
+          )
         }}
       >
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+        <Drawer.Screen name="Home" component={HomeScreen} />
+
+        <Drawer.Screen
+          name="Register missing Products"
+          component={MissingProducts}
           options={{
-            headerTitle: () => <LogoTitle />,
-            headerRight: () => (
-              <Button
-                onPress={() => alert("This is a button")}
-                title="info"
-                color={GREEN}
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/drawer.png")}
+                style={{ width: 25, height: 25, marginLeft: 5 }}
               />
             )
           }}
         />
-        <Stack.Screen
-          name="Register missing Products"
-          component={MissingProducts}
-        />
-        <Stack.Screen
+        <Drawer.Screen
           name="Check for available Products"
           component={AvailableProducts}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/drawer.png")}
+                style={{ width: 25, height: 25, marginLeft: 5 }}
+              />
+            )
+          }}
         />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
