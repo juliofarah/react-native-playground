@@ -1,9 +1,17 @@
 import React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import MapView from "react-native-maps";
 import useLocation from "./components/hooks/useLocation";
+import usePOIs from "./components/hooks/usePOIs";
+import useVenues from "./components/hooks/useVenues";
 
 const GREEN = "rgb(185,232,223)";
 
@@ -83,6 +91,16 @@ const AvailableProducts = ({ navigation }) => {
 
 const Map = ({ navigation }) => {
   const [location] = useLocation();
+  const [pois, isLoading, error] = useVenues();
+
+  if (error) {
+    return <Text>{JSON.stringify(error)}</Text>;
+  }
+
+  if (isLoading) {
+    return <ActivityIndicator size="small" color={GREEN} />;
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
