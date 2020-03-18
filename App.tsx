@@ -86,51 +86,55 @@ const AvailableProducts = ({ navigation }) => {
   );
 };
 
+const StoresMap = ({ navigation }) => {
+  return (
+    <View style={{ flex: 1 }}>
+      <Header navigation={navigation} />
+      <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
+        <Text>Map available soon</Text>
+      </View>
+    </View>
+  );
+};
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={
-          {
-            // drawerIcon: () => (
-            //   <Image
-            //     source={require("./assets/drawer.png")}
-            //     style={{ width: 25, height: 25, marginLeft: 5 }}
-            //   />
-            // )
-          }
-        }
-      >
-        <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Navigator initialRouteName="View Map">
+        <Drawer.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/home.png")}
+                style={{ width: 25, height: 25, marginLeft: 5 }}
+              />
+            )
+          }}
+        />
 
         <Drawer.Screen
           name="Register missing Products"
           component={MissingProducts}
-          options={
-            {
-              // drawerIcon: () => (
-              //   <Image
-              //     source={require("./assets/drawer.png")}
-              //     style={{ width: 25, height: 25, marginLeft: 5 }}
-              //   />
-              // )
-            }
-          }
         />
+
         <Drawer.Screen
           name="Check for available Products"
           component={AvailableProducts}
-          options={
-            {
-              // drawerIcon: () => (
-              //   <Image
-              //     source={require("./assets/drawer.png")}
-              //     style={{ width: 25, height: 25, marginLeft: 5 }}
-              //   />
-              // )
-            }
-          }
+        />
+
+        <Drawer.Screen
+          name="View map"
+          component={StoresMap}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/poi.png")}
+                style={{ width: 25, height: 25, marginLeft: 5 }}
+              />
+            )
+          }}
         />
       </Drawer.Navigator>
     </NavigationContainer>
