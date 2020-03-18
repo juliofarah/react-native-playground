@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  Text,
-  View,
-  Button,
-  Image,
-  TouchableOpacity,
-  ShadowPropTypesIOS
-} from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import MapView from "react-native-maps";
+import useLocation from "./components/hooks/useLocation";
 
 const GREEN = "rgb(185,232,223)";
 
@@ -86,22 +81,23 @@ const AvailableProducts = ({ navigation }) => {
   );
 };
 
+const Map = ({ navigation }) => {
+  const [location] = useLocation();
+  return (
+    <View style={{ flex: 1 }}>
+      <Header navigation={navigation} />
+      <MapView
+        style={{ width: "100%", height: "100%" }}
+        initialRegion={location}
+      />
+    </View>
+  );
+};
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={
-          {
-            // drawerIcon: () => (
-            //   <Image
-            //     source={require("./assets/drawer.png")}
-            //     style={{ width: 25, height: 25, marginLeft: 5 }}
-            //   />
-            // )
-          }
-        }
-      >
+      <Drawer.Navigator initialRouteName="Map">
         <Drawer.Screen name="Home" component={HomeScreen} />
 
         <Drawer.Screen
@@ -118,20 +114,13 @@ export default function App() {
             }
           }
         />
+
         <Drawer.Screen
           name="Check for available Products"
           component={AvailableProducts}
-          options={
-            {
-              // drawerIcon: () => (
-              //   <Image
-              //     source={require("./assets/drawer.png")}
-              //     style={{ width: 25, height: 25, marginLeft: 5 }}
-              //   />
-              // )
-            }
-          }
         />
+
+        <Drawer.Screen name="Map" component={Map} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
